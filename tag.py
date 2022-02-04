@@ -49,6 +49,6 @@ def win_addInfo(F,TagList):
         XPKeywords = 0x9C9E
         exifdata = image.getexif()
         exifdata[XPKeywords] = ';'.join(TagList).encode("utf16")
-        image.save(F, exif=exifdata)
+            image.save(F, exif=exifdata, optimize=False)
     except Exception as e:
         print(e)
