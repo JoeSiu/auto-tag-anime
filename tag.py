@@ -1,7 +1,7 @@
 import sys
 if sys.platform == 'win32':
     import os
-    import iptcinfo3
+    from PIL import Image
     patched = False
 else:
     import xattr
@@ -41,14 +41,12 @@ def osx_writexattrs(F,TagList):
             # Equivalent shell command is xattr -w com.apple.metadata:kMDItemFinderComment [PLIST value] [File name]
 
 def win_addInfo(F,TagList):
-    if not patched:
-        origianl_IPTCInfo = iptcinfo3.IPTCInfo
-        iptcinfo3.IPTCInfo = patch_IPTCInfo
-
     try:
-        info = iptcinfo3.IPTCInfo(F)
-        info['keywords'] = TagList
-        info.save()
-        os.remove(F + '~')
-    except:
-        return
+        # ref: https://stackoverflow.com/questions/63981971/xpcomment-and-xpkeywords-does-not-appear-when-writing-exif-metadata
+        image = Image.open(F)
+        XPKeywords = 0x9C9E
+        exifdata = image.getexif()
+        exifdata[XPKeywords] = ';'.join(TagList).encode("utf16")
+        image.save(F, exif=exifdata)
+    except Exception as e:
+        print(e)
