@@ -2,11 +2,12 @@
 
 Automatically adds booru style tags to an image or directory of images by using this neural net model: https://github.com/KichangKim/DeepDanbooru
 
-## Update in this fork
+## Changes in this fork
 Fixs for problems I am facing
 * Fixed model not in folder error when using the newer pre-trained model (Updated tensorflow requirement to 2.8.0)
 * Fixed JPEG not found
 * Fixed tags not adding to the image for Window (Use Pillow instead of IPTCInfo3)
+* Added skip function based on [winterNebs's fork](https://github.com/winterNebs/auto-tag-anime)
 
 ## Updated Instructions
 
