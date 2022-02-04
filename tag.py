@@ -44,6 +44,8 @@ def win_addInfo(F,TagList):
     try:
         # ref: https://stackoverflow.com/questions/63981971/xpcomment-and-xpkeywords-does-not-appear-when-writing-exif-metadata
         image = Image.open(F)
+        if image.mode in ("RGBA", "P"):
+            image = image.convert("RGB")
         XPKeywords = 0x9C9E
         exifdata = image.getexif()
         exifdata[XPKeywords] = ';'.join(TagList).encode("utf16")
