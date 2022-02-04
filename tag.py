@@ -40,15 +40,33 @@ def osx_writexattrs(F,TagList):
         xattr.setxattr (F,OptionalTag+Field,TagText.encode('utf8'))
             # Equivalent shell command is xattr -w com.apple.metadata:kMDItemFinderComment [PLIST value] [File name]
 
-def win_addInfo(F,TagList):
+def win_addInfo(F,TagList, skip):
     try:
-        # ref: https://stackoverflow.com/questions/63981971/xpcomment-and-xpkeywords-does-not-appear-when-writing-exif-metadata
+        # Ref: https://stackoverflow.com/questions/63981971/xpcomment-and-xpkeywords-does-not-appear-when-writing-exif-metadata
         image = Image.open(F)
+
         if image.mode in ("RGBA", "P"):
             image = image.convert("RGB")
-        XPKeywords = 0x9C9E
+
+        # Get image metadata
         exifdata = image.getexif()
-        exifdata[XPKeywords] = ';'.join(TagList).encode("utf16")
+        XPKeywords = 0x9C9E
+        try:
+            # See if tag exists already
+            exifdata[XPKeywords]
+        except:
+            # No tag exists
+            exifdata[XPKeywords] = ';'.join(TagList).encode("utf16")
             image.save(F, exif=exifdata, optimize=False)
+            print('added ', str(len(TagList)), ' tags to ', F)
+        else:
+            # Tag exists
+            if (skip):
+                print('skipping ', F, ' as it has existing tags already')
+            else:
+                exifdata[XPKeywords] = ';'.join(TagList).encode("utf16")
+                image.save(F, exif=exifdata, optimize=False)
+                print('re-added ', str(len(TagList)), ' tags to ', F)
+
     except Exception as e:
-        print(e)
+        print('error on', F, ': ', e)
