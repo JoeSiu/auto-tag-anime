@@ -5,7 +5,7 @@ import numpy as np
 import PIL
 
 model_path = "./model"
-print(tf.__version__)
+
 class deepdanbooruModel():
     def __init__(self):
         self.model = self.load_model()
