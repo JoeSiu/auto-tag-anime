@@ -11,6 +11,7 @@ Automatically adds booru style tags to an image or directory of images by using 
 ### Additional changes
 * Added skip function based on [winterNebs's fork](https://github.com/winterNebs/auto-tag-anime)
 * Removed image optimization/compression when saving the image
+* Maintain image's color profile when saving the image that have it
 
 ## Updated Instructions
 
