@@ -57,7 +57,7 @@ def win_addInfo(F,TagList, skip):
         except:
             # No tag exists
             exifdata[XPKeywords] = ';'.join(TagList).encode("utf16")
-            image.save(F, exif=exifdata, optimize=False, quality='keep', icc_profile=image.info.get('icc_profile'))
+            image.save(F, exif=exifdata, optimize=False, quality='keep', subsampling=0, icc_profile=image.info.get('icc_profile'))
             print('added ', str(len(TagList)), ' tags to ', F)
         else:
             # Tag exists
