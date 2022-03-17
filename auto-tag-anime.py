@@ -23,7 +23,8 @@ class addAnimeTags():
         if sys.platform == 'win32':   
             file_ext = os.path.splitext(path)[1]
             if file_ext != '.jpg' and file_ext != '.jpeg':
-                return path + " is not a JPEG, no exif data"
+                print(path + " is not a JPEG, no exif data")
+                return
         
         status, tags = self.model.classify_image(path)
         if status == 'success':
